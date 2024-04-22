@@ -1,5 +1,11 @@
 package Controller;
 
-public class TicTacToeDriver {
-    
+import View.TicTacToeTUI;
+
+public class TicTacToeDriver
+{
+    public static void main(String[] args)
+    {
+        TicTacToeTUI.run();
+    }
 }
