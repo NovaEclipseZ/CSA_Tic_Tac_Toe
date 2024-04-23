@@ -13,7 +13,7 @@ public class Location
         this.y = yPos;
         this.x = xPos;
         this.attached = g;
-        this.state = " ";
+        this.state = "_";
         this.turns = 0;
     }
 
@@ -29,7 +29,7 @@ public class Location
 
     public boolean isOccupied()
     {
-        if(state.equals(" "))
+        if(state.equals("_"))
         {
             return false;
         }
