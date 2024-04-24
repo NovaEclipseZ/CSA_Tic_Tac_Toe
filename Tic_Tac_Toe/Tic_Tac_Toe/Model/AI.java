@@ -21,7 +21,7 @@ public class AI extends GamePlayer
             if(possibleMoves.get(i).getTurns() != -1 && possibleMoves.get(i).getTurns() < temp)
             {
                 temp = possibleMoves.get(i).getTurns();
-                index = 0;
+                index = i;
             }
         }
         Location turn = new Location(possibleMoves.get(index).getXPos(), possibleMoves.get(index).getXPos(), g);
@@ -32,7 +32,7 @@ public class AI extends GamePlayer
     {
         Gameboard cloned = g.copy();
         ArrayList<Location> validLoc = cloned.getValidLocations();
-        if(validLoc.size() < 1)
+        if(validLoc.size() <= 1)
         {
             return -1;
         }
@@ -50,7 +50,7 @@ public class AI extends GamePlayer
             }
             Gameboard cloned2 = cloned.copy();
             ArrayList<Location> validLoc2 = cloned2.getValidLocations();
-            if(validLoc2.size() < 1)
+            if(validLoc2.size() <= 1)
             {
                 return -1;
             }
@@ -65,7 +65,8 @@ public class AI extends GamePlayer
                     temp.setTurns(count);
                     return count;
                 }
-                int possibility = bestMove(cloned2, count);
+                System.out.println(count);
+                int possibility = this.bestMove(cloned2, count);
                 if(possibility == -1)
                 {
                     temp.changeState("Tied");
