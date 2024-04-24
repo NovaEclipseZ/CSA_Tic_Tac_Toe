@@ -24,57 +24,75 @@ public class AI extends GamePlayer
                 index = i;
             }
         }
+        System.out.println(possibleMoves.get(index).getXPos() + " " + possibleMoves.get(index).getXPos());
         Location turn = new Location(possibleMoves.get(index).getXPos(), possibleMoves.get(index).getXPos(), g);
         return turn;
     }
 
     public int bestMove(Gameboard g, int count)
     {
-        Gameboard cloned = g.copy();
-        ArrayList<Location> validLoc = cloned.getValidLocations();
-        if(validLoc.size() <= 1)
+        if(count < 3)
         {
-            return -1;
-        }
-        for(int i = 0; i < validLoc.size(); i++)
-        {
-            Location temp = validLoc.get(i);
-            cloned.takeTurn(temp.getXPos(), temp.getYPos(), 1);
-            count++;
-            if(cloned.isWon())
+            Gameboard cloned = g.copy();
+            ArrayList<Location> validLoc = cloned.getValidLocations();
+            for(Location l : validLoc)
             {
-                temp.changeState("Won");
-                temp.setTurns(count);
-                possibleMoves.add(temp);
-                return count;
+                System.out.println(l.getXPos() + " " + l.getYPos());
             }
-            Gameboard cloned2 = cloned.copy();
-            ArrayList<Location> validLoc2 = cloned2.getValidLocations();
-            if(validLoc2.size() <= 1)
+            if(validLoc.size() <= 1)
             {
                 return -1;
             }
-            for(int j = 0; j < validLoc2.size(); j++)
+            for(int i = 0; i < validLoc.size(); i++)
             {
-                Location temp2 = validLoc2.get(j);
-                cloned2.takeTurn(temp2.getXPos(), temp2.getYPos(), 0);
+                Location temp = validLoc.get(i);
+                cloned.takeTurn(temp.getXPos(), temp.getYPos(), 1);
+                count++;
                 if(cloned.isWon())
                 {
-                    temp.changeState("Lost");
-                    possibleMoves.add(temp);
+                    temp.changeState("Won");
                     temp.setTurns(count);
+                    possibleMoves.add(temp);
                     return count;
                 }
-                System.out.println(count);
-                int possibility = this.bestMove(cloned2, count);
-                if(possibility == -1)
+                Gameboard cloned2 = cloned.copy();
+                ArrayList<Location> validLoc2 = cloned2.getValidLocations();
+                if(validLoc2.size() <= 1)
                 {
-                    temp.changeState("Tied");
-                    temp.setTurns(count);
-                    possibleMoves.add(temp);
+                    return -1;
+                }
+                for(int j = 0; j < validLoc2.size(); j++)
+                {
+                    Location temp2 = validLoc2.get(j);
+                    cloned2.takeTurn(temp2.getXPos(), temp2.getYPos(), 0);
+                    if(cloned2.isWon())
+                    {
+                        temp.changeState("Lost");
+                        temp.setTurns(count);
+                        possibleMoves.add(temp);
+                        return count;
+                    }
+                    int possibility = this.bestMove(cloned2, count);
+                    if(possibility == -1)
+                    {
+                        temp.changeState("Tied");
+                        temp.setTurns(count);
+                        possibleMoves.add(temp);
+                    }
+                    else if(possibility == -2)
+                    {
+                        temp.changeState("Max range");
+                        temp.setTurns(count);
+                        possibleMoves.add(temp);
+                    }
                 }
             }
+            return count;
         }
-        return count;
+        else
+        {
+            return -2;
+        }
     }
+    
 }
