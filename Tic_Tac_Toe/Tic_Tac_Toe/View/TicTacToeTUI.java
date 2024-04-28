@@ -28,7 +28,14 @@ public class TicTacToeTUI
                 int row = Integer.parseInt(input.nextLine());
                 System.out.println("Enter a column:");
                 int col = Integer.parseInt(input.nextLine());
-                game.takeTurn(row, col, counter);
+                while(!game.takeTurn(row, col, counter))
+                {
+                    System.out.println("Not a valid input, try again");
+                    System.out.println("Enter a row:");
+                    row = Integer.parseInt(input.nextLine());
+                    System.out.println("Enter a column:");
+                    col = Integer.parseInt(input.nextLine());
+                }
             }
             else
             {

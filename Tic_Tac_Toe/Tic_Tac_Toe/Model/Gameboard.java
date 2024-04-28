@@ -22,17 +22,19 @@ public class Gameboard
         return this.board;
     }
 
-    public void takeTurn(int r, int c, int t)
+    public boolean takeTurn(int r, int c, int t)
     {
-        Location temp = board[r][c];
-        if(!(temp.isOccupied()) && t % 2 == 0)
+        if(!(this.board[r][c].isOccupied()) && t % 2 == 0)
         {
-            board[r][c].changeState("O");
+            this.board[r][c].changeState("O");
+            return true;
         }
-        else if(!(temp.isOccupied()) && t % 2 == 1)
+        else if(!(this.board[r][c].isOccupied()) && t % 2 == 1)
         {
-            board[r][c].changeState("X");
+            this.board[r][c].changeState("X");
+            return true;
         }
+        return false;
     }
 
     public boolean isWon()

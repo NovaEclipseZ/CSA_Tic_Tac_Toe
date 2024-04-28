@@ -13,7 +13,6 @@ public class AI extends GamePlayer
 
     public Location getTurn(Gameboard g)
     {
-        possibleMoves = new ArrayList<Location>();
         int temp = this.bestMove(g, 0);
         int index = 0;
         for(int i = 0; i < possibleMoves.size(); i++)
@@ -26,6 +25,10 @@ public class AI extends GamePlayer
         }
         System.out.println(possibleMoves.get(index).getXPos() + " " + possibleMoves.get(index).getXPos());
         Location turn = new Location(possibleMoves.get(index).getXPos(), possibleMoves.get(index).getXPos(), g);
+        for(int i = 0; i < possibleMoves.size(); i++)
+        {
+            possibleMoves.remove(0);
+        }
         return turn;
     }
 
