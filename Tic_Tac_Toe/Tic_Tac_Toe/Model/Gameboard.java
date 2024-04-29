@@ -149,11 +149,11 @@ public class Gameboard
         {
             if(toCopy.get(i).getState().equals("X"))
             {
-                copied.takeTurn(toCopy.get(i).getXPos(),toCopy.get(i).getYPos(), 1);
+                copied.takeTurn(toCopy.get(i).getYPos(),toCopy.get(i).getXPos(), 1);
             }
             else
             {
-                copied.takeTurn(toCopy.get(i).getXPos(),toCopy.get(i).getYPos(), 2);
+                copied.takeTurn(toCopy.get(i).getYPos(), toCopy.get(i).getXPos(), 0);
             }
         }
         return copied;

@@ -14,21 +14,72 @@ public class AI extends GamePlayer
     public Location getTurn(Gameboard g)
     {
         int temp = this.bestMove(g, 0);
-        int index = 0;
+        int index = -1;
+        int check = 0;
+        while(possibleMoves.size() > check)
+        {
+            if(g.getBoard()[possibleMoves.get(check).getYPos()][possibleMoves.get(check).getXPos()].isOccupied())
+            {
+                possibleMoves.remove(check);
+            }
+            else
+            {
+                check++;
+            }
+        }
         for(int i = 0; i < possibleMoves.size(); i++)
         {
-            if(possibleMoves.get(i).getTurns() != -1 && possibleMoves.get(i).getTurns() < temp)
+            if(possibleMoves.get(i).getTurns() != -1 && possibleMoves.get(i).getTurns() != -2 && possibleMoves.get(i).getTurns() < temp && !possibleMoves.get(i).getState().equals("Lost"))
             {
                 temp = possibleMoves.get(i).getTurns();
                 index = i;
             }
         }
-        System.out.println(possibleMoves.get(index).getXPos() + " " + possibleMoves.get(index).getXPos());
-        Location turn = new Location(possibleMoves.get(index).getXPos(), possibleMoves.get(index).getXPos(), g);
+        if(index == -1)
+        {
+            for(int i = 0; i < possibleMoves.size(); i++)
+            {
+                if(possibleMoves.get(i).getTurns() != -1 && !possibleMoves.get(i).getState().equals("Lost"))
+                {
+                    temp = possibleMoves.get(i).getTurns();
+                    index = i;
+                }
+            }
+        }
+        if(index == -1)
+        {
+            for(int i = 0; i < possibleMoves.size(); i++)
+            {
+                if(possibleMoves.get(i).getTurns() > temp && !possibleMoves.get(i).getState().equals("Lost"))
+                {
+                    temp = possibleMoves.get(i).getTurns();
+                    index = i;
+                }
+            }
+        }
+        if(index == -1)
+        {
+            for(int i = 0; i < possibleMoves.size(); i++)
+            {
+                if(possibleMoves.get(i).getTurns() > temp)
+                {
+                    temp = possibleMoves.get(i).getTurns();
+                    index = i;
+                }
+            }
+        }
+        if(index == -1)
+        {
+            index = 0;
+        }
+        Location turn = new Location(possibleMoves.get(index).getYPos(), possibleMoves.get(index).getXPos(), g);
         for(int i = 0; i < possibleMoves.size(); i++)
         {
             possibleMoves.remove(0);
         }
+        Gameboard cloned = g.copy();
+        System.out.println(cloned);
+        System.out.println(turn.getYPos() + " " + turn.getXPos());
         return turn;
     }
 
@@ -38,10 +89,6 @@ public class AI extends GamePlayer
         {
             Gameboard cloned = g.copy();
             ArrayList<Location> validLoc = cloned.getValidLocations();
-            for(Location l : validLoc)
-            {
-                System.out.println(l.getXPos() + " " + l.getYPos());
-            }
             if(validLoc.size() <= 1)
             {
                 return -1;

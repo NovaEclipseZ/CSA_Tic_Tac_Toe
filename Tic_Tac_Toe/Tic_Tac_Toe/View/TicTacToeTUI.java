@@ -41,10 +41,11 @@ public class TicTacToeTUI
             {
                 System.out.println(computer.getName() + "'s turn");
                 Location compTurn = computer.getTurn(game);
-                game.takeTurn(compTurn.getXPos(), compTurn.getYPos(), counter);
+                game.takeTurn(compTurn.getYPos(), compTurn.getXPos(), counter);
             }
             if(game.isWon())
             {
+                System.out.println(game);
                 won = true;
                 if(counter % 2 == 0)
                 {
@@ -61,6 +62,8 @@ public class TicTacToeTUI
                 if(playAgain.equals("y"))
                 {
                     won = false;
+                    game = new Gameboard();
+                    counter = -1;
                 }
             }
             else if(game.getValidLocations().size() == 0)
@@ -72,6 +75,8 @@ public class TicTacToeTUI
                 if(playAgain.equals("y"))
                 {
                     won = false;
+                    game = new Gameboard();
+                    counter = -1;
                 }
             }
             counter++;
