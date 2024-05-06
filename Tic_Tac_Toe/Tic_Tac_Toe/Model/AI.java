@@ -3,146 +3,186 @@ import java.util.ArrayList;
 
 public class AI extends GamePlayer
 {
-    private ArrayList<Location> possibleMoves;
-
     public AI()
     {
         super();
-        possibleMoves = new ArrayList<Location>();
     }
 
     public Location getTurn(Gameboard g)
     {
-        int temp = this.bestMove(g, 0);
-        int index = -1;
-        int check = 0;
-        while(possibleMoves.size() > check)
+        ArrayList<Location> toFormulate = this.bestMove(g, 0);
+        ArrayList<Location> possibleMoves = new ArrayList<Location>();
+        int i = 0;
+        while(i < toFormulate.size())
         {
-            if(g.getBoard()[possibleMoves.get(check).getYPos()][possibleMoves.get(check).getXPos()].isOccupied())
+            if(toFormulate.get(i).getOptimization() == 2);
             {
-                possibleMoves.remove(check);
+                Location temp = new Location(toFormulate.get(i).getXPos(), toFormulate.get(i).getXPos(), g);
+                possibleMoves.add(temp);
             }
-            else
-            {
-                check++;
-            }
+            i++;
         }
-        for(int i = 0; i < possibleMoves.size(); i++)
+        if(possibleMoves.size() == 0)
         {
-            if(possibleMoves.get(i).getTurns() != -1 && possibleMoves.get(i).getTurns() != -2 && possibleMoves.get(i).getTurns() < temp && !possibleMoves.get(i).getState().equals("Lost"))
+            i = 0;
+            while(i < toFormulate.size())
             {
-                temp = possibleMoves.get(i).getTurns();
-                index = i;
-            }
-        }
-        if(index == -1)
-        {
-            for(int i = 0; i < possibleMoves.size(); i++)
-            {
-                if(possibleMoves.get(i).getTurns() != -1 && !possibleMoves.get(i).getState().equals("Lost"))
+                if(toFormulate.get(i).getOptimization() == 1);
                 {
-                    temp = possibleMoves.get(i).getTurns();
-                    index = i;
+                    Location temp = new Location(toFormulate.get(i).getXPos(), toFormulate.get(i).getXPos(), g);
+                    possibleMoves.add(temp);
                 }
+                i++;
             }
         }
-        if(index == -1)
+        if(possibleMoves.size() == 0)
         {
-            for(int i = 0; i < possibleMoves.size(); i++)
+            i = 0;
+            while(i < toFormulate.size())
             {
-                if(possibleMoves.get(i).getTurns() > temp && !possibleMoves.get(i).getState().equals("Lost"))
+                if(toFormulate.get(i).getOptimization() == -1);
                 {
-                    temp = possibleMoves.get(i).getTurns();
-                    index = i;
+                    Location temp = new Location(toFormulate.get(i).getXPos(), toFormulate.get(i).getXPos(), g);
+                    possibleMoves.add(temp);
                 }
+                i++;
             }
         }
-        if(index == -1)
+        if(possibleMoves.size() == 0)
         {
-            for(int i = 0; i < possibleMoves.size(); i++)
+            i = 0;
+            while(i < toFormulate.size())
             {
-                if(possibleMoves.get(i).getTurns() > temp)
+                if(toFormulate.get(i).getOptimization() == 0);
                 {
-                    temp = possibleMoves.get(i).getTurns();
-                    index = i;
+                    Location temp = new Location(toFormulate.get(i).getXPos(), toFormulate.get(i).getXPos(), g);
+                    possibleMoves.add(temp);
                 }
+                i++;
             }
         }
-        if(index == -1)
+        Location turn;
+        if(possibleMoves.size() > 1)
         {
-            index = 0;
+            turn = possibleMoves.get((int) Math.random() * possibleMoves.size());
         }
-        Location turn = new Location(possibleMoves.get(index).getYPos(), possibleMoves.get(index).getXPos(), g);
-        for(int i = 0; i < possibleMoves.size(); i++)
+        else
         {
-            possibleMoves.remove(0);
+            turn = possibleMoves.get(0);
         }
-        Gameboard cloned = g.copy();
-        System.out.println(cloned);
         System.out.println(turn.getYPos() + " " + turn.getXPos());
         return turn;
     }
 
-    public int bestMove(Gameboard g, int count)
+    public ArrayList<Location> bestMove(Gameboard g, int executions)
     {
-        if(count < 3)
+        if(g.getValidLocations().size() > 0 && executions < 3)
         {
-            Gameboard cloned = g.copy();
-            ArrayList<Location> validLoc = cloned.getValidLocations();
-            if(validLoc.size() <= 1)
+            Gameboard compCloned = g.copy();
+            Gameboard playerCloned = g.copy();
+            ArrayList<Location> possibleMoves = new ArrayList<Location>();
+            for(int i = 0; i < g.getValidLocations().size(); i++)
             {
-                return -1;
-            }
-            for(int i = 0; i < validLoc.size(); i++)
-            {
-                Location temp = validLoc.get(i);
-                cloned.takeTurn(temp.getXPos(), temp.getYPos(), 1);
-                count++;
-                if(cloned.isWon())
+                System.out.println(i + " " + g.getValidLocations().size() + " " + executions);
+                compCloned.takeTurn(compCloned.getValidLocations().get(i).getXPos(), compCloned.getValidLocations().get(i).getYPos(), 1);
+                playerCloned.takeTurn(playerCloned.getValidLocations().get(i).getXPos(), playerCloned.getValidLocations().get(i).getYPos(), 0);
+                if(compCloned.isWon())
                 {
-                    temp.changeState("Won");
-                    temp.setTurns(count);
+                    Location temp = new Location(compCloned.getValidLocations().get(i).getXPos(), compCloned.getValidLocations().get(i).getYPos(), g);
+                    temp.setOptimization(2);
                     possibleMoves.add(temp);
-                    return count;
                 }
-                Gameboard cloned2 = cloned.copy();
-                ArrayList<Location> validLoc2 = cloned2.getValidLocations();
-                if(validLoc2.size() <= 1)
+                else if(playerCloned.isWon())
                 {
-                    return -1;
+                    Location temp = new Location(playerCloned.getValidLocations().get(i).getXPos(), playerCloned.getValidLocations().get(i).getYPos(), g);
+                    temp.setOptimization(1);
+                    possibleMoves.add(temp);
                 }
-                for(int j = 0; j < validLoc2.size(); j++)
+                else
                 {
-                    Location temp2 = validLoc2.get(j);
-                    cloned2.takeTurn(temp2.getXPos(), temp2.getYPos(), 0);
-                    if(cloned2.isWon())
+                    for(int j = 0; j < compCloned.getValidLocations().size(); j++)
                     {
-                        temp.changeState("Lost");
-                        temp.setTurns(count);
-                        possibleMoves.add(temp);
-                        return count;
+                        Gameboard compCloned2 = compCloned.copy();
+                        System.out.println(compCloned.getValidLocations().size());
+                        compCloned2.takeTurn(compCloned2.getValidLocations().get(j).getXPos(), compCloned2.getValidLocations().get(j).getYPos(), 2);
+                        System.out.println(compCloned2.getValidLocations().size());
+                        ArrayList<Location> toFormulate = this.bestMove(compCloned2, executions + 1);
+                        int count = 0;
+                        int k = 0;
+                        while(k < toFormulate.size() && count == 0)
+                        {
+                            if(toFormulate.get(k).getOptimization() == 2);
+                            {
+                                Location temp = new Location(compCloned.getValidLocations().get(i).getXPos(), compCloned.getValidLocations().get(i).getYPos(), g);
+                                temp.setOptimization(0);
+                                count++;
+                                possibleMoves.add(temp);
+                            }
+                            k++;
+                        }
+                        if(count == 0)
+                        {
+                            k = 0;
+                            while(k < toFormulate.size() && count == 0)
+                            {
+                                if(toFormulate.get(k).getOptimization() == 1);
+                                {
+                                    Location temp = new Location(compCloned.getValidLocations().get(i).getXPos(), compCloned.getValidLocations().get(i).getYPos(), g);
+                                    temp.setOptimization(0);
+                                    count++;
+                                    possibleMoves.add(temp);
+                                }
+                                k++;
+                            }
+                        }
+                        if(count == 0)
+                        {
+                            k = 0;
+                            while(k < toFormulate.size() && count == 0)
+                            {
+                                if(toFormulate.get(k).getOptimization() == -1);
+                                {
+                                    Location temp = new Location(compCloned.getValidLocations().get(i).getXPos(), compCloned.getValidLocations().get(i).getYPos(), g);
+                                    temp.setOptimization(0);
+                                    count++;
+                                    possibleMoves.add(temp);
+                                }
+                                k++;
+                            }
+                        }
+                        if(count == 0)
+                        {
+                            k = 0;
+                            while(j < toFormulate.size() && count == 0)
+                            {
+                                if(toFormulate.get(k).getOptimization() == 0);
+                                {
+                                    Location temp = new Location(compCloned.getValidLocations().get(i).getXPos(), compCloned.getValidLocations().get(i).getYPos(), g);
+                                    temp.setOptimization(0);
+                                    count++;
+                                    possibleMoves.add(temp);
+                                }
+                                k++;
+                            }
+                        }
                     }
-                    int possibility = this.bestMove(cloned2, count);
-                    if(possibility == -1)
-                    {
-                        temp.changeState("Tied");
-                        temp.setTurns(count);
-                        possibleMoves.add(temp);
-                    }
-                    else if(possibility == -2)
-                    {
-                        temp.changeState("Max range");
-                        temp.setTurns(count);
-                        possibleMoves.add(temp);
-                    }
+                    
                 }
             }
-            return count;
+            return possibleMoves;
+        }
+        else if(executions >= 3)
+        {
+            ArrayList<Location> possibleMoves = new ArrayList<Location>();
+            Location temp = new Location(-1, -1, g);
+            temp.setOptimization(0);
+            possibleMoves.add(temp);
+            return possibleMoves;
         }
         else
         {
-            return -2;
+            ArrayList<Location> possibleMoves = new ArrayList<Location>();
+            return possibleMoves;
         }
     }
-    
 }

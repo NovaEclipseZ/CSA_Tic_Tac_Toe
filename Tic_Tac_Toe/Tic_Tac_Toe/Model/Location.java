@@ -6,7 +6,7 @@ public class Location
     private int y;
     private int x;
     private String state;
-    private int turns;
+    private int optimization;
 
     public Location(int yPos, int xPos, Gameboard g)
     {
@@ -14,17 +14,17 @@ public class Location
         this.x = xPos;
         this.attached = g;
         this.state = "_";
-        this.turns = 0;
+        this.optimization = 0;
     }
 
-    public int getTurns()
+    public int getOptimization()
     {
-        return this.turns;
+        return this.optimization;
     }
 
-    public void setTurns(int t)
+    public void setOptimization(int o)
     {
-        this.turns = t;
+        this.optimization = o;
     }
 
     public boolean isOccupied()
