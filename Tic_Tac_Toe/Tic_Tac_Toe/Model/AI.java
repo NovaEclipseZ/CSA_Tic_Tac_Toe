@@ -125,7 +125,7 @@ public class AI extends GamePlayer
                             {
                                 if(toFormulate.get(k).getOptimization() == 1);
                                 {
-                                    Location temp = new Location(compCloned.getValidLocations().get(i).getYPos(), compCloned.getValidLocations().get(i).getXPos(), g);
+                                    Location temp = new Location(toFormulate.get(k).getYPos(), toFormulate.get(k).getXPos(), g);
                                     temp.setOptimization(0);
                                     count++;
                                     possibleMoves.add(temp);
@@ -140,7 +140,7 @@ public class AI extends GamePlayer
                             {
                                 if(toFormulate.get(k).getOptimization() == -1);
                                 {
-                                    Location temp = new Location(compCloned.getValidLocations().get(i).getYPos(), compCloned.getValidLocations().get(i).getXPos(), g);
+                                    Location temp = new Location(toFormulate.get(k).getYPos(), toFormulate.get(k).getXPos(), g);
                                     temp.setOptimization(0);
                                     count++;
                                     possibleMoves.add(temp);
@@ -155,7 +155,7 @@ public class AI extends GamePlayer
                             {
                                 if(toFormulate.get(k).getOptimization() == 0);
                                 {
-                                    Location temp = new Location(compCloned.getValidLocations().get(i).getYPos(), compCloned.getValidLocations().get(i).getXPos(), g);
+                                    Location temp = new Location(toFormulate.get(k).getYPos(), toFormulate.get(k).getXPos(), g);
                                     temp.setOptimization(0);
                                     count++;
                                     possibleMoves.add(temp);
