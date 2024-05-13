@@ -11,91 +11,8 @@ public class AI extends GamePlayer
     public Location getTurn(Gameboard g)
     {
         ArrayList<Location> toFormulate = this.bestMove(g, 0);
-        ArrayList<Location> possibleMoves = new ArrayList<Location>();
-        int i = 0;
-        while(i < toFormulate.size())
-        {
-            if(toFormulate.get(i).getOptimization() == 2);
-            {
-                Location temp = new Location(toFormulate.get(i).getYPos(), toFormulate.get(i).getXPos(), g);
-                possibleMoves.add(temp);
-            }
-            i++;
-        }
-        if(possibleMoves.size() == 0)
-        {
-            i = 0;
-            while(i < toFormulate.size())
-            {
-                if(toFormulate.get(i).getOptimization() == 1);
-                {
-                    Location temp = new Location(toFormulate.get(i).getYPos(), toFormulate.get(i).getXPos(), g);
-                    possibleMoves.add(temp);
-                }
-                i++;
-            }
-        }
-        if(possibleMoves.size() == 0)
-        {
-            i = 0;
-            while(i < toFormulate.size())
-            {
-                if(toFormulate.get(i).getOptimization() == 4);
-                {
-                    Location temp = new Location(toFormulate.get(i).getYPos(), toFormulate.get(i).getXPos(), g);
-                    possibleMoves.add(temp);
-                }
-                i++;
-            }
-        }
-        if(possibleMoves.size() == 0)
-        {
-            i = 0;
-            while(i < toFormulate.size())
-            {
-                if(toFormulate.get(i).getOptimization() == 3);
-                {
-                    Location temp = new Location(toFormulate.get(i).getYPos(), toFormulate.get(i).getXPos(), g);
-                    possibleMoves.add(temp);
-                }
-                i++;
-            }
-        }
-        if(possibleMoves.size() == 0)
-        {
-            i = 0;
-            while(i < toFormulate.size())
-            {
-                if(toFormulate.get(i).getOptimization() == -1);
-                {
-                    Location temp = new Location(toFormulate.get(i).getYPos(), toFormulate.get(i).getXPos(), g);
-                    possibleMoves.add(temp);
-                }
-                i++;
-            }
-        }
-        if(possibleMoves.size() == 0)
-        {
-            i = 0;
-            while(i < toFormulate.size())
-            {
-                if(toFormulate.get(i).getOptimization() == 0);
-                {
-                    Location temp = new Location(toFormulate.get(i).getYPos(), toFormulate.get(i).getXPos(), g);
-                    possibleMoves.add(temp);
-                }
-                i++;
-            }
-        }
-        Location turn;
-        if(possibleMoves.size() > 1)
-        {
-            turn = possibleMoves.get((int) Math.random() * possibleMoves.size());
-        }
-        else
-        {
-            turn = possibleMoves.get(0);
-        }
+        System.out.println(toFormulate.size());
+        Location turn = this.evaluate(toFormulate);
         System.out.println(turn.getYPos() + " " + turn.getXPos());
         return turn;
     }
@@ -130,101 +47,24 @@ public class AI extends GamePlayer
                         Gameboard compCloned2 = compCloned.copy();
                         compCloned2.takeTurn(compCloned.getValidLocations().get(j).getYPos(), compCloned.getValidLocations().get(j).getXPos(), 2);
                         ArrayList<Location> toFormulate = this.bestMove(compCloned2, executions + 1);
-                        int count = 0;
-                        int k = 0;
-                        while(k < toFormulate.size() && count == 0)
+                        if(toFormulate.size() >= 1)
                         {
-                            if(toFormulate.get(k).getOptimization() == 2);
+                            Location temp = this.evaluate(toFormulate);
+                            if(temp.getOptimization() == 2)
                             {
-                                Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
                                 temp.setOptimization(4);
-                                count++;
-                                possibleMoves.add(temp);
                             }
-                            k++;
-                        }
-                        if(count == 0)
-                        {
-                            k = 0;
-                            while(k < toFormulate.size() && count == 0)
+                            else if(temp.getOptimization() == 1)
                             {
-                                if(toFormulate.get(k).getOptimization() == 1);
-                                {
-                                    Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
-                                    temp.setOptimization(3);
-                                    count++;
-                                    possibleMoves.add(temp);
-                                }
-                                k++;
+                                temp.setOptimization(3);
                             }
-                        }
-                        if(count == 0)
-                        {
-                            k = 0;
-                            while(k < toFormulate.size() && count == 0)
-                            {
-                                if(toFormulate.get(k).getOptimization() == 4);
-                                {
-                                    Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
-                                    temp.setOptimization(4);
-                                    count++;
-                                    possibleMoves.add(temp);
-                                }
-                                k++;
-                            }
-                        }
-                        if(count == 0)
-                        {
-                            k = 0;
-                            while(k < toFormulate.size() && count == 0)
-                            {
-                                if(toFormulate.get(k).getOptimization() == 3);
-                                {
-                                    Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
-                                    temp.setOptimization(3);
-                                    count++;
-                                    possibleMoves.add(temp);
-                                }
-                                k++;
-                            }
-                        }
-                        if(count == 0)
-                        {
-                            k = 0;
-                            while(k < toFormulate.size() && count == 0)
-                            {
-                                if(toFormulate.get(k).getOptimization() == -1);
-                                {
-                                    Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
-                                    temp.setOptimization(-1);
-                                    count++;
-                                    possibleMoves.add(temp);
-                                }
-                                k++;
-                            }
-                        }
-                        if(count == 0)
-                        {
-                            k = 0;
-                            while(j < toFormulate.size() && count == 0)
-                            {
-                                if(toFormulate.get(k).getOptimization() == 0);
-                                {
-                                    Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
-                                    temp.setOptimization(0);
-                                    count++;
-                                    possibleMoves.add(temp);
-                                }
-                                k++;
-                            }
-                        }
-                        if(count == 0)
-                        {
-                            Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
-                            temp.setOptimization(0);
-                            count++;
                             possibleMoves.add(temp);
                         }
+                        else
+                        {
+
+                        }
+                        
                     }
                     
                 }
@@ -244,5 +84,79 @@ public class AI extends GamePlayer
             ArrayList<Location> possibleMoves = new ArrayList<Location>();
             return possibleMoves;
         }
+    }
+
+    public Location evaluate(ArrayList<Location> toEvaluate)
+    {
+        int i = 0;
+        int indexOfBest = 0;
+        int count = 0;
+        while(i < toEvaluate.size() && count != 0)
+        {
+            System.out.println(toEvaluate.get(i).getOptimization());
+            if(toEvaluate.get(i).getOptimization() == 2);
+            {
+                indexOfBest = i;
+                count++;
+            }
+            i++;
+        }
+        System.out.println(count);
+        if(count == 0)
+        {
+            i = 0;
+            System.out.println("optimization 1");
+            while(i < toEvaluate.size() && count != 0)
+            {
+                if(toEvaluate.get(i).getOptimization() == 1);
+                {
+                    indexOfBest = i;
+                    count++;
+                }
+                i++;
+            }
+        }
+        if(count == 0)
+        {
+            i = 0;
+            System.out.println("optimization 4");
+            while(i < toEvaluate.size() && count != 0)
+            {
+                if(toEvaluate.get(i).getOptimization() == 4);
+                {
+                    indexOfBest = i;
+                    count++;
+                }
+                i++;
+            }
+        }
+        if(count == 0)
+        {
+            i = 0;
+            System.out.println("optimization 3");
+            while(i < toEvaluate.size() && count != 0)
+            {
+                if(toEvaluate.get(i).getOptimization() == 3);
+                {
+                    indexOfBest = i;
+                    count++;
+                }
+                i++;
+            }
+        }
+        if(count == 0)
+        {
+            i = 0;
+            while(i < toEvaluate.size() && count != 0)
+            {
+                if(toEvaluate.get(i).getOptimization() == 0);
+                {
+                    indexOfBest = i;
+                    count++;
+                }
+                i++;
+            }
+        }
+        return toEvaluate.get(indexOfBest);
     }
 }
