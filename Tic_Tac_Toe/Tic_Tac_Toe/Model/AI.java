@@ -17,7 +17,7 @@ public class AI extends GamePlayer
         {
             if(toFormulate.get(i).getOptimization() == 2);
             {
-                Location temp = new Location(toFormulate.get(i).getXPos(), toFormulate.get(i).getXPos(), g);
+                Location temp = new Location(toFormulate.get(i).getYPos(), toFormulate.get(i).getXPos(), g);
                 possibleMoves.add(temp);
             }
             i++;
@@ -29,7 +29,33 @@ public class AI extends GamePlayer
             {
                 if(toFormulate.get(i).getOptimization() == 1);
                 {
-                    Location temp = new Location(toFormulate.get(i).getXPos(), toFormulate.get(i).getXPos(), g);
+                    Location temp = new Location(toFormulate.get(i).getYPos(), toFormulate.get(i).getXPos(), g);
+                    possibleMoves.add(temp);
+                }
+                i++;
+            }
+        }
+        if(possibleMoves.size() == 0)
+        {
+            i = 0;
+            while(i < toFormulate.size())
+            {
+                if(toFormulate.get(i).getOptimization() == 4);
+                {
+                    Location temp = new Location(toFormulate.get(i).getYPos(), toFormulate.get(i).getXPos(), g);
+                    possibleMoves.add(temp);
+                }
+                i++;
+            }
+        }
+        if(possibleMoves.size() == 0)
+        {
+            i = 0;
+            while(i < toFormulate.size())
+            {
+                if(toFormulate.get(i).getOptimization() == 3);
+                {
+                    Location temp = new Location(toFormulate.get(i).getYPos(), toFormulate.get(i).getXPos(), g);
                     possibleMoves.add(temp);
                 }
                 i++;
@@ -42,7 +68,7 @@ public class AI extends GamePlayer
             {
                 if(toFormulate.get(i).getOptimization() == -1);
                 {
-                    Location temp = new Location(toFormulate.get(i).getXPos(), toFormulate.get(i).getXPos(), g);
+                    Location temp = new Location(toFormulate.get(i).getYPos(), toFormulate.get(i).getXPos(), g);
                     possibleMoves.add(temp);
                 }
                 i++;
@@ -55,7 +81,7 @@ public class AI extends GamePlayer
             {
                 if(toFormulate.get(i).getOptimization() == 0);
                 {
-                    Location temp = new Location(toFormulate.get(i).getXPos(), toFormulate.get(i).getXPos(), g);
+                    Location temp = new Location(toFormulate.get(i).getYPos(), toFormulate.get(i).getXPos(), g);
                     possibleMoves.add(temp);
                 }
                 i++;
@@ -78,7 +104,6 @@ public class AI extends GamePlayer
     {
         if(g.getValidLocations().size() > 0 && executions < 3)
         {
-            
             ArrayList<Location> possibleMoves = new ArrayList<Location>();
             for(int i = 0; i < g.getValidLocations().size(); i++)
             {
@@ -103,7 +128,7 @@ public class AI extends GamePlayer
                     for(int j = 0; j < compCloned.getValidLocations().size(); j++)
                     {
                         Gameboard compCloned2 = compCloned.copy();
-                        compCloned2.takeTurn(compCloned2.getValidLocations().get(j).getYPos(), compCloned2.getValidLocations().get(j).getXPos(), 2);
+                        compCloned2.takeTurn(compCloned.getValidLocations().get(j).getYPos(), compCloned.getValidLocations().get(j).getXPos(), 2);
                         ArrayList<Location> toFormulate = this.bestMove(compCloned2, executions + 1);
                         int count = 0;
                         int k = 0;
@@ -111,8 +136,8 @@ public class AI extends GamePlayer
                         {
                             if(toFormulate.get(k).getOptimization() == 2);
                             {
-                                Location temp = new Location(toFormulate.get(k).getYPos(), toFormulate.get(k).getXPos(), g);
-                                temp.setOptimization(0);
+                                Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
+                                temp.setOptimization(4);
                                 count++;
                                 possibleMoves.add(temp);
                             }
@@ -125,8 +150,38 @@ public class AI extends GamePlayer
                             {
                                 if(toFormulate.get(k).getOptimization() == 1);
                                 {
-                                    Location temp = new Location(toFormulate.get(k).getYPos(), toFormulate.get(k).getXPos(), g);
-                                    temp.setOptimization(0);
+                                    Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
+                                    temp.setOptimization(3);
+                                    count++;
+                                    possibleMoves.add(temp);
+                                }
+                                k++;
+                            }
+                        }
+                        if(count == 0)
+                        {
+                            k = 0;
+                            while(k < toFormulate.size() && count == 0)
+                            {
+                                if(toFormulate.get(k).getOptimization() == 4);
+                                {
+                                    Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
+                                    temp.setOptimization(4);
+                                    count++;
+                                    possibleMoves.add(temp);
+                                }
+                                k++;
+                            }
+                        }
+                        if(count == 0)
+                        {
+                            k = 0;
+                            while(k < toFormulate.size() && count == 0)
+                            {
+                                if(toFormulate.get(k).getOptimization() == 3);
+                                {
+                                    Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
+                                    temp.setOptimization(3);
                                     count++;
                                     possibleMoves.add(temp);
                                 }
@@ -140,8 +195,8 @@ public class AI extends GamePlayer
                             {
                                 if(toFormulate.get(k).getOptimization() == -1);
                                 {
-                                    Location temp = new Location(toFormulate.get(k).getYPos(), toFormulate.get(k).getXPos(), g);
-                                    temp.setOptimization(0);
+                                    Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
+                                    temp.setOptimization(-1);
                                     count++;
                                     possibleMoves.add(temp);
                                 }
@@ -155,13 +210,20 @@ public class AI extends GamePlayer
                             {
                                 if(toFormulate.get(k).getOptimization() == 0);
                                 {
-                                    Location temp = new Location(toFormulate.get(k).getYPos(), toFormulate.get(k).getXPos(), g);
+                                    Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
                                     temp.setOptimization(0);
                                     count++;
                                     possibleMoves.add(temp);
                                 }
                                 k++;
                             }
+                        }
+                        if(count == 0)
+                        {
+                            Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
+                            temp.setOptimization(0);
+                            count++;
+                            possibleMoves.add(temp);
                         }
                     }
                     
@@ -173,7 +235,7 @@ public class AI extends GamePlayer
         {
             ArrayList<Location> possibleMoves = new ArrayList<Location>();
             Location temp = new Location(-1, -1, g);
-            temp.setOptimization(0);
+            temp.setOptimization(-1);
             possibleMoves.add(temp);
             return possibleMoves;
         }
