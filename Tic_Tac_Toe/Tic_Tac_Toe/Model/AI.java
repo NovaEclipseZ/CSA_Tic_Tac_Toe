@@ -52,17 +52,25 @@ public class AI extends GamePlayer
                             Location temp = this.evaluate(toFormulate);
                             if(temp.getOptimization() == 2)
                             {
+                                temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
                                 temp.setOptimization(4);
                             }
                             else if(temp.getOptimization() == 1)
                             {
+                                temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
                                 temp.setOptimization(3);
+                            }
+                            else if(temp.getOptimization() == -1)
+                            {
+                                temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
+                                temp.setOptimization(-1);
                             }
                             possibleMoves.add(temp);
                         }
                         else
                         {
-
+                            Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
+                            temp.setOptimization(0);
                         }
                         
                     }
@@ -91,24 +99,24 @@ public class AI extends GamePlayer
         int i = 0;
         int indexOfBest = 0;
         int count = 0;
-        while(i < toEvaluate.size() && count != 0)
+        while(i < toEvaluate.size() && count == 0)
         {
             System.out.println(toEvaluate.get(i).getOptimization());
-            if(toEvaluate.get(i).getOptimization() == 2);
+            if(toEvaluate.get(i).getOptimization() > 1);
             {
                 indexOfBest = i;
                 count++;
+                System.out.println(count);
             }
             i++;
         }
-        System.out.println(count);
         if(count == 0)
         {
             i = 0;
             System.out.println("optimization 1");
-            while(i < toEvaluate.size() && count != 0)
+            while(i < toEvaluate.size() && count == 0)
             {
-                if(toEvaluate.get(i).getOptimization() == 1);
+                if(toEvaluate.get(i).getOptimization() > 0);
                 {
                     indexOfBest = i;
                     count++;
@@ -120,9 +128,9 @@ public class AI extends GamePlayer
         {
             i = 0;
             System.out.println("optimization 4");
-            while(i < toEvaluate.size() && count != 0)
+            while(i < toEvaluate.size() && count == 0)
             {
-                if(toEvaluate.get(i).getOptimization() == 4);
+                if(toEvaluate.get(i).getOptimization() > 3);
                 {
                     indexOfBest = i;
                     count++;
@@ -134,9 +142,9 @@ public class AI extends GamePlayer
         {
             i = 0;
             System.out.println("optimization 3");
-            while(i < toEvaluate.size() && count != 0)
+            while(i < toEvaluate.size() && count == 0)
             {
-                if(toEvaluate.get(i).getOptimization() == 3);
+                if(toEvaluate.get(i).getOptimization() > 2);
                 {
                     indexOfBest = i;
                     count++;
@@ -147,9 +155,9 @@ public class AI extends GamePlayer
         if(count == 0)
         {
             i = 0;
-            while(i < toEvaluate.size() && count != 0)
+            while(i < toEvaluate.size() && count == 0)
             {
-                if(toEvaluate.get(i).getOptimization() == 0);
+                if(toEvaluate.get(i).getOptimization() > -1);
                 {
                     indexOfBest = i;
                     count++;
