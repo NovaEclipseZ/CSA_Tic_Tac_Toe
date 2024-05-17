@@ -46,7 +46,8 @@ public class AI extends GamePlayer
                     {
                         Gameboard compCloned2 = compCloned.copy();
                         compCloned2.takeTurn(compCloned.getValidLocations().get(j).getYPos(), compCloned.getValidLocations().get(j).getXPos(), 2);
-                        ArrayList<Location> toFormulate = this.bestMove(compCloned2, executions + 1);
+                        /**
+                         * ArrayList<Location> toFormulate = this.bestMove(compCloned2, executions + 1);
                         if(toFormulate.size() >= 1)
                         {
                             Location temp = this.evaluate(toFormulate);
@@ -73,6 +74,8 @@ public class AI extends GamePlayer
                             temp.setOptimization(0);
                         }
                         
+                         */
+                        
                     }
                     
                 }
@@ -94,6 +97,11 @@ public class AI extends GamePlayer
         }
     }
 
+    /**
+     * Takes in a ArrayList of Locations and finds the most optimal Location out of passed parameter
+     * @param toEvaluate
+     * @return Location
+     */
     public Location evaluate(ArrayList<Location> toEvaluate)
     {
         ArrayList<Location> possibleTurns = new ArrayList<Location>();
@@ -101,8 +109,7 @@ public class AI extends GamePlayer
         for(int i = 0; i < toEvaluate.size(); i++)
         {
             System.out.println(toEvaluate.get(i).getOptimization());
-            int temp = toEvaluate.get(i).getOptimization();
-            if(temp == 2);
+            if(toEvaluate.get(i).getOptimization() == 2);
             {
                 possibleTurns.add(toEvaluate.get(i));
                 count++;
