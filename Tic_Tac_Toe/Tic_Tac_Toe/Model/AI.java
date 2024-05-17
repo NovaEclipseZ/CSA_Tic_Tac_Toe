@@ -96,75 +96,76 @@ public class AI extends GamePlayer
 
     public Location evaluate(ArrayList<Location> toEvaluate)
     {
-        int i = 0;
-        int indexOfBest = 0;
+        ArrayList<Location> possibleTurns = new ArrayList<Location>();
         int count = 0;
-        while(i < toEvaluate.size() && count == 0)
+        for(int i = 0; i < toEvaluate.size(); i++)
         {
             System.out.println(toEvaluate.get(i).getOptimization());
-            if(toEvaluate.get(i).getOptimization() > 1);
+            int temp = toEvaluate.get(i).getOptimization();
+            if(temp == 2);
             {
-                indexOfBest = i;
+                possibleTurns.add(toEvaluate.get(i));
                 count++;
                 System.out.println(count);
             }
-            i++;
         }
+        System.out.println("optimization 2");
         if(count == 0)
         {
-            i = 0;
             System.out.println("optimization 1");
-            while(i < toEvaluate.size() && count == 0)
+            for(int i = 0; i < toEvaluate.size(); i++)
             {
-                if(toEvaluate.get(i).getOptimization() > 0);
+                if(toEvaluate.get(i).getOptimization() == 1);
                 {
-                    indexOfBest = i;
+                    possibleTurns.add(toEvaluate.get(i));
                     count++;
                 }
-                i++;
             }
         }
         if(count == 0)
         {
-            i = 0;
             System.out.println("optimization 4");
-            while(i < toEvaluate.size() && count == 0)
+            for(int i = 0; i < toEvaluate.size(); i++)
             {
-                if(toEvaluate.get(i).getOptimization() > 3);
+                if(toEvaluate.get(i).getOptimization() == 4);
                 {
-                    indexOfBest = i;
+                    possibleTurns.add(toEvaluate.get(i));
                     count++;
                 }
-                i++;
             }
         }
         if(count == 0)
         {
-            i = 0;
             System.out.println("optimization 3");
-            while(i < toEvaluate.size() && count == 0)
+            for(int i = 0; i < toEvaluate.size(); i++)
             {
-                if(toEvaluate.get(i).getOptimization() > 2);
+                if(toEvaluate.get(i).getOptimization() == 3);
                 {
-                    indexOfBest = i;
+                    possibleTurns.add(toEvaluate.get(i));
                     count++;
                 }
-                i++;
             }
         }
         if(count == 0)
         {
-            i = 0;
-            while(i < toEvaluate.size() && count == 0)
+            for(int i = 0; i < toEvaluate.size(); i++)
             {
-                if(toEvaluate.get(i).getOptimization() > -1);
+                if(toEvaluate.get(i).getOptimization() == 0);
                 {
-                    indexOfBest = i;
+                    possibleTurns.add(toEvaluate.get(i));
                     count++;
                 }
-                i++;
             }
         }
-        return toEvaluate.get(indexOfBest);
+        if(count == 0)
+        {
+            Location temp = new Location(toEvaluate.get(0).getYPos(), toEvaluate.get(0).getXPos(), toEvaluate.get(0).getAttachedGameboard());
+            temp.setOptimization(-1);
+            return temp;
+        }
+        else
+        {
+            return possibleTurns.get((int)(Math.random() * possibleTurns.size()));
+        }
     }
 }
