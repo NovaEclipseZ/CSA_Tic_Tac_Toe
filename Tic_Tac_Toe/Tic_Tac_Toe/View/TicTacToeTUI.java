@@ -41,7 +41,7 @@ public class TicTacToeTUI
             {
                 System.out.println(computer.getName() + "'s turn");
                 Location compTurn = computer.getTurn(game);
-                game.takeTurn(compTurn.getYPos(), compTurn.getXPos(), counter);
+                game.takeTurn(compTurn.getRow(), compTurn.getCol(), counter);
             }
             if(game.isWon())
             {

@@ -11,9 +11,7 @@ public class AI extends GamePlayer
     public Location getTurn(Gameboard g)
     {
         ArrayList<Location> toFormulate = this.bestMove(g, 0);
-        System.out.println(toFormulate.size());
         Location turn = this.evaluate(toFormulate);
-        System.out.println(turn.getYPos() + " " + turn.getXPos());
         return turn;
     }
 
@@ -26,17 +24,17 @@ public class AI extends GamePlayer
             {
                 Gameboard compCloned = g.copy();
                 Gameboard playerCloned = g.copy();
-                compCloned.takeTurn(g.getValidLocations().get(i).getXPos(), g.getValidLocations().get(i).getYPos(), 1);
-                playerCloned.takeTurn(g.getValidLocations().get(i).getXPos(), g.getValidLocations().get(i).getYPos(), 0);
+                compCloned.takeTurn(g.getValidLocations().get(i).getRow(), g.getValidLocations().get(i).getCol(), 1);
+                playerCloned.takeTurn(g.getValidLocations().get(i).getRow(), g.getValidLocations().get(i).getCol(), 0);
                 if(compCloned.isWon())
                 {
-                    Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
+                    Location temp = new Location(g.getValidLocations().get(i).getRow(), g.getValidLocations().get(i).getCol(), g);
                     temp.setOptimization(2);
                     possibleMoves.add(temp);
                 }
                 else if(playerCloned.isWon())
                 {
-                    Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
+                    Location temp = new Location(g.getValidLocations().get(i).getRow(), g.getValidLocations().get(i).getCol(), g);
                     temp.setOptimization(1);
                     possibleMoves.add(temp);
                 }
@@ -45,37 +43,28 @@ public class AI extends GamePlayer
                     for(int j = 0; j < compCloned.getValidLocations().size(); j++)
                     {
                         Gameboard compCloned2 = compCloned.copy();
-                        compCloned2.takeTurn(compCloned.getValidLocations().get(j).getYPos(), compCloned.getValidLocations().get(j).getXPos(), 2);
-                        /**
-                         * ArrayList<Location> toFormulate = this.bestMove(compCloned2, executions + 1);
+                        compCloned2.takeTurn(compCloned.getValidLocations().get(j).getRow(), compCloned.getValidLocations().get(j).getCol(), 2);
+                        ArrayList<Location> toFormulate = this.bestMove(compCloned2, executions + 1);
                         if(toFormulate.size() >= 1)
                         {
                             Location temp = this.evaluate(toFormulate);
-                            if(temp.getOptimization() == 2)
+                            if(temp.getOptimization() == -1)
                             {
-                                temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
-                                temp.setOptimization(4);
+                                temp = new Location(g.getValidLocations().get(i).getRow(), g.getValidLocations().get(i).getCol(), g);
+                                temp.setOptimization(0);
                             }
-                            else if(temp.getOptimization() == 1)
+                            else
                             {
-                                temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
-                                temp.setOptimization(3);
-                            }
-                            else if(temp.getOptimization() == -1)
-                            {
-                                temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
-                                temp.setOptimization(-1);
+                                temp.setOptimization(0);
                             }
                             possibleMoves.add(temp);
                         }
                         else
                         {
-                            Location temp = new Location(g.getValidLocations().get(i).getYPos(), g.getValidLocations().get(i).getXPos(), g);
+                            Location temp = new Location(g.getValidLocations().get(i).getRow(), g.getValidLocations().get(i).getCol(), g);
                             temp.setOptimization(0);
+                            possibleMoves.add(temp);
                         }
-                        
-                         */
-                        
                     }
                     
                 }
@@ -105,74 +94,39 @@ public class AI extends GamePlayer
     public Location evaluate(ArrayList<Location> toEvaluate)
     {
         ArrayList<Location> possibleTurns = new ArrayList<Location>();
-        int count = 0;
-        for(int i = 0; i < toEvaluate.size(); i++)
+        for(Location eval : toEvaluate)
         {
-            System.out.println(toEvaluate.get(i).getOptimization());
-            if(toEvaluate.get(i).getOptimization() == 2);
+            if(eval.getOptimization() == 2)
             {
-                possibleTurns.add(toEvaluate.get(i));
-                count++;
-                System.out.println(count);
+                possibleTurns.add(eval);
             }
         }
-        System.out.println("optimization 2");
-        if(count == 0)
+        if(possibleTurns.size() >= 1)
         {
-            System.out.println("optimization 1");
-            for(int i = 0; i < toEvaluate.size(); i++)
+            return possibleTurns.get((int) (Math.random() * possibleTurns.size()));
+        }
+        for(Location eval : toEvaluate)
+        {
+            if(eval.getOptimization() == 1)
             {
-                if(toEvaluate.get(i).getOptimization() == 1);
-                {
-                    possibleTurns.add(toEvaluate.get(i));
-                    count++;
-                }
+                possibleTurns.add(eval);
             }
         }
-        if(count == 0)
+        if(possibleTurns.size() >= 1)
         {
-            System.out.println("optimization 4");
-            for(int i = 0; i < toEvaluate.size(); i++)
+            return possibleTurns.get((int) (Math.random() * possibleTurns.size()));
+        }
+        for(Location eval : toEvaluate)
+        {
+            if(eval.getOptimization() == 0)
             {
-                if(toEvaluate.get(i).getOptimization() == 4);
-                {
-                    possibleTurns.add(toEvaluate.get(i));
-                    count++;
-                }
+                possibleTurns.add(eval);
             }
         }
-        if(count == 0)
+        if(possibleTurns.size() >= 1)
         {
-            System.out.println("optimization 3");
-            for(int i = 0; i < toEvaluate.size(); i++)
-            {
-                if(toEvaluate.get(i).getOptimization() == 3);
-                {
-                    possibleTurns.add(toEvaluate.get(i));
-                    count++;
-                }
-            }
+            return possibleTurns.get((int) (Math.random() * possibleTurns.size()));
         }
-        if(count == 0)
-        {
-            for(int i = 0; i < toEvaluate.size(); i++)
-            {
-                if(toEvaluate.get(i).getOptimization() == 0);
-                {
-                    possibleTurns.add(toEvaluate.get(i));
-                    count++;
-                }
-            }
-        }
-        if(count == 0)
-        {
-            Location temp = new Location(toEvaluate.get(0).getYPos(), toEvaluate.get(0).getXPos(), toEvaluate.get(0).getAttachedGameboard());
-            temp.setOptimization(-1);
-            return temp;
-        }
-        else
-        {
-            return possibleTurns.get((int)(Math.random() * possibleTurns.size()));
-        }
+        return toEvaluate.get((int) (Math.random() * toEvaluate.size()));
     }
 }

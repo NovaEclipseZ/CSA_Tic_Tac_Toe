@@ -3,15 +3,15 @@ package Model;
 public class Location
 {
     private Gameboard attached;
-    private int y;
-    private int x;
+    private int row;
+    private int col;
     private String state;
     private int optimization;
 
-    public Location(int yPos, int xPos, Gameboard g)
+    public Location(int rowPos, int colPos, Gameboard g)
     {
-        this.y = yPos;
-        this.x = xPos;
+        this.row = rowPos;
+        this.col = colPos;
         this.attached = g;
         this.state = "_";
         this.optimization = 0;
@@ -51,13 +51,13 @@ public class Location
         return this.attached;
     }
 
-    public int getXPos()
+    public int getRow()
     {
-        return this.x;
+        return this.row;
     }
 
-    public int getYPos()
+    public int getCol()
     {
-        return this.y;
+        return this.col;
     }
 }
